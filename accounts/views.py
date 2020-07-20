@@ -16,13 +16,18 @@ def home(request):
     
     context = {'orders':orders, 'customers':customers,'pending':pending, 'delivered':delivered, 'total_orders':total_orders, 'total_customers':total_customers}
 
-
-
     return render(request, 'accounts/dashboard.html', context)
 
 def products(request):
     products = Product.objects.all()
     return render(request, 'accounts/products.html',{'products':products})
 
-def customer(request):
-    return render(request, 'accounts/customer.html')
+def customer(request, pk_test):
+    customer = Customer.objects.get(id=pk_test)
+
+    
+    orders = customer.order_set.all()
+    order_count = orders.count()
+
+    context = {'customer':customer,'orders':orders, 'order_count':order_count}
+    return render(request, 'accounts/customer.html',context)
